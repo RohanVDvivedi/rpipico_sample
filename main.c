@@ -13,6 +13,8 @@ void delay_for(volatile int clocks)
 	}
 }
 
+// GPIO 25 is the LED pin
+
 void main(void)
 {
 	RCC->RCC_APB2ENR |= (1<<4);

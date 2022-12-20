@@ -3,24 +3,39 @@
 
 #include<stdint.h>
 
+typedef struct GPIO_status_ctrl_t GPIO_status_ctrl_t;
+struct GPIO_status_ctrl_t
+{
+	uint32_t GPIO_STATUS;
+	uint32_t GPIO_CTRL;
+};
+
 typedef struct GPIO_t GPIO_t;
 struct GPIO_t
 {
-	uint32_t GPIO_CRL;
-	uint32_t GPIO_CRH;
-	uint32_t GPIO_IDR;
-	uint32_t GPIO_ODR;
-	uint32_t GPIO_BSRR;
-	uint32_t GPIO_BRR;
-	uint32_t GPIO_LCKR;
+	GPIO_status_ctrl_t STATUS_CTRL[30];
+	uint32_t INTR[4];
+	uint32_t PROC0_INTE[4];
+	uint32_t PROC0_INTF[4];
+	uint32_t PROC0_INTS[4];
+	uint32_t PROC1_INTE[4];
+	uint32_t PROC1_INTF[4];
+	uint32_t PROC1_INTS[4];
+	uint32_t DORMANT_WAKE_INTE[4];
+	uint32_t DORMANT_WAKE_INTF[4];
+	uint32_t DORMANT_WAKE_INTS[4];
 };
 
-#define GPIOA ((volatile GPIO_t*)(0x40010800))
-#define GPIOB ((volatile GPIO_t*)(0x40010C00))
-#define GPIOC ((volatile GPIO_t*)(0x40011000))
-#define GPIOD ((volatile GPIO_t*)(0x40011400))
-#define GPIOE ((volatile GPIO_t*)(0x40011800))
-#define GPIOF ((volatile GPIO_t*)(0x40011C00))
-#define GPIOG ((volatile GPIO_t*)(0x40012000))
+typedef struct GPIO_pad_t GPIO_pad_t;
+struct GPIO_pad_t
+{
+	uint32_t VOLTAGE_SELECT;
+	uint32_t GPIO_PAD_CTRL[30];
+	uint32_t SWCLK;
+	uint32_t SWD;
+};
+
+#define GPIO      ((volatile GPIO_t*)(0x40014000))
+#define GPIO_PADS ((volatile GPIO_pad_t*)(0x4001c000))
 
 #endif
