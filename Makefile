@@ -54,15 +54,11 @@ main.elf : startup_ARMCM0plus.o $(OBJECTS)
 main.bin : main.elf
 	${OC} -O binary main.elf main.bin
 
-all : main.bin
+main.uf2 : main.bin
+	~/Downloads/uf2/utils/uf2conv.py main.bin --family 0xe48bff56 --base 0x00000000 --convert --output main.uf2
+
+all : main.uf2
 
 # clean project
 clean :
-	rm -f *.o $(OBJECTS) *.elf *.bin *.d *.map
-
-# upload command to upload the code to the microcontroller
-upload :
-	st-flash write main.bin 0x08000000
-
-upload-using-uart :
-	stm32flash -w main.bin /dev/ttyUSB0
+	rm -f *.o $(OBJECTS) *.elf *.bin *.uf2 *.d *.map
