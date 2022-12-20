@@ -258,14 +258,14 @@ Reset_Handler:
 .L_loop3_done:
 #endif /* __STARTUP_CLEAR_BSS_MULTIPLE || __STARTUP_CLEAR_BSS */
 
-#ifndef __NO_SYSTEM_INIT
-	bl	SystemInit
-#endif
+//#ifndef __NO_SYSTEM_INIT
+//	bl	SystemInit
+//#endif
 
-#ifndef __START
-#define __START _start
-#endif
-	bl	__START
+//#ifndef __START
+//#define __START _start
+//#endif
+	bl	main
 
 	.pool
 	.size	Reset_Handler, . - Reset_Handler
