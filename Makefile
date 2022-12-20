@@ -43,11 +43,11 @@ OBJECTS:=$(patsubst %.c,%.o,${SOURCES})
 STARTUP_DEFS:=-D__STARTUP_CLEAR_BSS
 
 # generate explicitly the startup object elf for this controller and project
-startup_ARMCM3.o : startup_ARMCM3.S
+startup_ARMCM0plus.o : startup_ARMCM0plus.S
 	${CC} $(CCFLAGS) $(STARTUP_DEFS) $< -o $@
 
 # generate final elf by linking all the object files
-main.elf : startup_ARMCM3.o $(OBJECTS)
+main.elf : startup_ARMCM0plus.o $(OBJECTS)
 	$(LD) $(ARCH_FLAGS) $(LDFLAGS) $(USE_NOHOST) $^ -o $@ $(LIB)
 
 # convert to hex or binary that can be transfered by the corresponding uploader driver

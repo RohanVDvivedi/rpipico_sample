@@ -1,21 +1,18 @@
-/* Linker script to configure memory regions. 
- * Need modifying for a specific board. 
- *   FLASH.ORIGIN: starting address of flash
- *   FLASH.LENGTH: length of flash
- *   RAM.ORIGIN: starting address of RAM bank 0
- *   RAM.LENGTH: length of RAM bank 0
- */
+/* Linker script to configure memory regions. */
 MEMORY
 {
-  FLASH (rx) : ORIGIN = 0x08000000, LENGTH = 128K
-  RAM (rwx) : ORIGIN = 0x20000000, LENGTH = 20K
+  FLASH (rx) : ORIGIN = 0x10000000, LENGTH = 16M
+  RAM (rwx)  : ORIGIN = 0x20000000, LENGTH = 264k
 }
+
+/* Library configurations */
+GROUP(libgcc.a libc.a libm.a libnosys.a)
 
 /* Linker script to place sections and symbol values. Should be used together
  * with other linker script that defines memory regions FLASH and RAM.
  * It references following symbols, which must be defined in code:
  *   Reset_Handler : Entry of reset handler
- * 
+ *
  * It defines following symbols, which code can use without definition:
  *   __exidx_start
  *   __exidx_end
@@ -40,6 +37,8 @@ MEMORY
  *   __StackLimit
  *   __StackTop
  *   __stack
+ *   __Vectors_End
+ *   __Vectors_Size
  */
 ENTRY(Reset_Handler)
 
@@ -47,7 +46,11 @@ SECTIONS
 {
 	.text :
 	{
-		KEEP(*(.isr_vector))
+		KEEP(*(.vectors))
+		__Vectors_End = .;
+		__Vectors_Size = __Vectors_End - __Vectors;
+		__end__ = .;
+
 		*(.text*)
 
 		KEEP(*(.init))
@@ -72,7 +75,7 @@ SECTIONS
 		KEEP(*(.eh_frame*))
 	} > FLASH
 
-	.ARM.extab : 
+	.ARM.extab :
 	{
 		*(.ARM.extab* .gnu.linkonce.armextab.*)
 	} > FLASH
@@ -118,10 +121,7 @@ SECTIONS
 	} > FLASH
 	*/
 
-	/* Location counter can end up 2byte aligned with narrow Thumb code but
-	   __etext is assumed by startup code to be the LMA of a section in RAM
-	   which must be 4byte aligned */
-	__etext = ALIGN (4);
+	__etext = .;
 
 	.data : AT (__etext)
 	{
@@ -166,12 +166,13 @@ SECTIONS
 		. = ALIGN(4);
 		__bss_end__ = .;
 	} > RAM
-	
+
 	.heap (COPY):
 	{
+		__HeapBase = .;
 		__end__ = .;
-		PROVIDE(end = .);
-		*(.heap*)
+		end = __end__;
+		KEEP(*(.heap*))
 		__HeapLimit = .;
 	} > RAM
 
@@ -180,7 +181,7 @@ SECTIONS
 	 * values to stack symbols later */
 	.stack_dummy (COPY):
 	{
-		*(.stack*)
+		KEEP(*(.stack*))
 	} > RAM
 
 	/* Set stack top to end of RAM, and stack limit move down by
@@ -188,7 +189,7 @@ SECTIONS
 	__StackTop = ORIGIN(RAM) + LENGTH(RAM);
 	__StackLimit = __StackTop - SIZEOF(.stack_dummy);
 	PROVIDE(__stack = __StackTop);
-	
+
 	/* Check if data + heap + stack exceeds RAM limit */
 	ASSERT(__StackLimit >= __HeapLimit, "region RAM overflowed with stack")
 }
