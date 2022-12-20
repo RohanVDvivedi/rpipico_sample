@@ -6,7 +6,7 @@ OC:=arm-none-eabi-objcopy
 USE_NOHOST:=--specs=nosys.specs
 
 # specify the instruction set to use and the cpu (can not change this)
-ARCH_FLAGS:=-mthumb -mcpu=cortex-m3
+ARCH_FLAGS:=-mthumb -mcpu=cortex-m0+
 # optimization for code size, use -O(0,1,2,3) for execution performance
 OPTIMIZATION:=-Os
 # the final compiler flags
