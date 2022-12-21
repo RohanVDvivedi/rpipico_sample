@@ -61,4 +61,4 @@ all : main.uf2
 
 # clean project
 clean :
-	rm -f *.o $(OBJECTS) *.elf *.bin *.uf2 *.d *.map
+	rm -f *.o $(OBJECTS) main.elf *.bin *.uf2 *.d *.map
