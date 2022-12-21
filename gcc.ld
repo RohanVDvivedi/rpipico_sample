@@ -46,6 +46,9 @@ SECTIONS
 {
 	.text :
 	{
+		/* this is the 2nd stage boot loader, it must always be here */
+		KEEP(boot2_generic_03h.padded.bin.elf(.data))
+
 		KEEP(*(.vectors))
 		__Vectors_End = .;
 		__Vectors_Size = __Vectors_End - __Vectors;
