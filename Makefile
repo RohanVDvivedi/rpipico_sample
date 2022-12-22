@@ -62,5 +62,5 @@ all : main.uf2
 # clean project
 clean :
 	# remove all elf files except the elf of the 2nd stage bootloader
-	find . -name "*.elf" | grep -v "boot2_generic_03h.padded.bin.elf" | xargs -r rm
+	find . -name "*.elf" -type f | grep -v "boot2_generic_03h.padded.bin.elf" | xargs -r rm
 	rm -f *.o $(OBJECTS) *.bin *.uf2 *.d *.map
