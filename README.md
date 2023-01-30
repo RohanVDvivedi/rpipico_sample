@@ -19,8 +19,8 @@ This is a sample project for bare metal programming Rpi-pico board
  * All that I have done is to find a padded (padded to 252 bytes and last 4 bytes being the CRC32 checksum) the pico-sdk's second stage bootloader.
  * Then I left started my FLASH leaving 256 bytes for this second stage bootloader.
  * Then finally concatenated the second stage bootloader binary file with my main.bin to eventually create final.uf2 file.
- * AND IT WORKS.
- * I plan to write my own second stage bootloader for rpi-pico soon into the future...
+ * AND IT WORKS. (*Read my makefile to understanf how I did this.*)
+ * I do plan to write my own second stage bootloader for rpi-pico soon into the future...
  * You can find other padded binary bootloaders [here](https://github.com/rp-rs/rp2040-boot2/blob/main/bin/)
 
 #### [RP2040 Datasheet](https://datasheets.raspberrypi.com/rp2040/rp2040-datasheet.pdf)
