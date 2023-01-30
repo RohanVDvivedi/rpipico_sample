@@ -16,11 +16,12 @@ This is a sample project for bare metal programming Rpi-pico board
 
 ### NOTE
  * This project lacks the original work on 2nd stage bootloader required by the Rpi-pico.
- * All that I have done is to find a padded (padded with 256 bytes and last 4 bytes being the CRC32 checksum) the pico-sdk's second stage bootloader.
- * Then I objcopied it like below 
- * `arm-none-eabi-objcopy --input-target=binary --output-target=elf32-littlearm boot2_generic_03h.padded.bin boot2_generic_03h.padded.bin.elf`
- * and then inserted it right before my vector table of the application. AND IT WORKS.
+ * All that I have done is to find a padded (padded to 252 bytes and last 4 bytes being the CRC32 checksum) the pico-sdk's second stage bootloader.
+ * Then I left started my FLASH leaving 256 bytes for this second stage bootloader.
+ * Then finally concatenated the second stage bootloader binary file with my main.bin to eventually create final.uf2 file.
+ * AND IT WORKS.
  * I plan to write my own second stage bootloader for rpi-pico soon into the future...
+ * You can find other padded binary bootloaders [here](https://github.com/rp-rs/rp2040-boot2/blob/main/bin/)
 
 #### [RP2040 Datasheet](https://datasheets.raspberrypi.com/rp2040/rp2040-datasheet.pdf)
 
