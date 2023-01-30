@@ -1,7 +1,8 @@
 /* Linker script to configure memory regions. */
+/* FLASH originally starts at  0x10000000, but the first 256 bytes are left for the second stage bootloader, which will be appended later */
 MEMORY
 {
-  FLASH (rx) : ORIGIN = 0x10000000, LENGTH = 16M
+  FLASH (rx) : ORIGIN = 0x10000100, LENGTH = 16M
   RAM (rwx)  : ORIGIN = 0x20000000, LENGTH = 264k
 }
 
@@ -46,9 +47,6 @@ SECTIONS
 {
 	.text :
 	{
-		/* this is the 2nd stage boot loader, it must always be here */
-		KEEP(boot2_generic_03h.padded.bin.elf(.data))
-
 		KEEP(*(.vectors))
 		__Vectors_End = .;
 		__Vectors_Size = __Vectors_End - __Vectors;

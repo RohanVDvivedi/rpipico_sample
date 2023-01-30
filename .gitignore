@@ -6,4 +6,4 @@
 *.d
 *.map
 *.uf2
-!boot2_generic_03h.padded.bin.elf
+!boot2_generic_03h.padded.bin

@@ -54,13 +54,17 @@ main.elf : startup_ARMCM0plus.o $(OBJECTS)
 main.bin : main.elf
 	${OC} -O binary main.elf main.bin
 
-main.uf2 : main.bin
-	node ./bin2uf2.js main.bin main.uf2
+# append second stage bootloader to the end of the main.bin and create a new file called final.bin
+final.bin : boot2_generic_03h.padded.bin main.bin
+	cat boot2_generic_03h.padded.bin main.bin > final.bin
 
-all : main.uf2
+final.uf2 : final.bin
+	node ./bin2uf2.js final.bin final.uf2
+
+all : final.uf2
 
 # clean project
 clean :
 	# remove all elf files except the elf of the 2nd stage bootloader
-	find . -name "*.elf" -type f | grep -v "boot2_generic_03h.padded.bin.elf" | xargs -r rm
-	rm -f *.o $(OBJECTS) *.bin *.uf2 *.d *.map
+	find . -name "*.bin" -type f | grep -v "boot2_generic_03h.padded.bin" | xargs -r rm
+	rm -f *.o $(OBJECTS) *.elf *.uf2 *.d *.map
